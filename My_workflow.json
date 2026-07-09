@@ -1,0 +1,159 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f6c206d0-55a3-4e1d-a039-f2efcf8c1237",
+      "name": "When chat message received",
+      "webhookId": "177ae7c3-ef7c-49ed-ab7d-69906f494367"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "You are a helpful assistaYou are an AI Email Assistant responsible for generating and sending professional emails.\n\nYour tasks:\n- Analyze the provided data and email request.\n- Create a clear and professional subject line.\n- Write personalized email content based on recipient details.\n- Use a friendly, professional, and human-like tone.\n- Keep emails concise and action-oriented.\n- Correct grammar, spelling, and formatting automatically.\n- Include a clear call-to-action when appropriate.\n- Generate follow-up emails when requested.\n- Never fabricate information not provided in the input.\n\nRules:\n- Use the recipient's name whenever available.\n- Adapt the tone based on the context (business, sales, support, networking, recruitment, etc.).\n- Maintain professionalism at all times.\n- Do not send spam, phishing, misleading, or harmful content.\n- Ask for missing information if critical details are unavailable.\n\nOutput Format:\n\nSubject: <Generated Subject>\n\nEmail:\n<Generated Email Body>\n\nBest Regards,\n<Sender Name>\n\nYour goal is to maximize professionalism, personalization, clarity, and response rates while ensuring safe and ethical communication.nt"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "2b96a89d-a7aa-48ab-b23f-77949265283b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "dd3314e8-6754-46c9-9140-8649b7151fd6",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "mnP8DkKaB55yHKtC",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        224,
+        208
+      ],
+      "id": "efba61e1-744f-40bc-a336-aa17f59d477b",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        208
+      ],
+      "id": "5ae13945-233e-498c-b868-67618819f066",
+      "name": "Send a message in Gmail",
+      "webhookId": "40f51f50-d0b0-4a1c-9fd5-3db7193649c6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ScKQqC0TKWSeh91r",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f016bb41-b826-4dea-a9f2-de9c3ca20aab",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "19dc3c71c1ccd174a75373754b7ff34a6e9f74ee6971a9ee4d7d5c9452c82edf"
+  },
+  "nodeGroups": [],
+  "id": "cSijP9a3VBcsWrEX",
+  "tags": []
+}
