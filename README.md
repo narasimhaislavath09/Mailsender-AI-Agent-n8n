@@ -115,7 +115,7 @@ Before you begin, ensure you have:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/narasimhaislavath09/EmailSender-AI Agent-n8n.git
+git clone https://github.com/narasimhaislavath09/Mailsender-AI-Agent-n8n.git
 cd your-repo-name
 ```
 
